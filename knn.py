@@ -55,7 +55,7 @@ def calc_error(k, tr_set, v_set):
 
 		counter = [0,0,0,0,0,0,0,0,0,0]
 		for (dist, lab) in ds:
-			counter[lab] = counter[lab] + 1;
+			counter[lab] = counter[lab] + 1
 		
 		m_counter = -1
 		predict = -1
@@ -77,13 +77,54 @@ def calc_error(k, tr_set, v_set):
 		debug_counter = debug_counter  + 1
 	return float(errors)/num_samples
 
+def calculate_confusion_matrix(k, tr_set, v_set):
+	counter_label = [0,0,0,0,0,0,0,0,0,0]
+	confusion_matrix = []
+	for i in range(0,10):
+		confusion_matrix.append([float(0),float(0),float(0),float(0),float(0),float(0),float(0),float(0),float(0),float(0)])
+	
+	for (v_feature, v_label) in v_set:
+		ds = []
+		for training_point in tr_set:
+			check_data(training_point, (v_feature, v_label), ds, k)
+
+		counter = [0,0,0,0,0,0,0,0,0,0]
+		for (dist, lab) in ds:
+			counter[lab] = counter[lab] + 1
+
+		m_counter = -1
+		predict = -1
+
+		for i in range(0, len(counter)):
+			if counter[i] > m_counter:
+				m_counter = counter[i]
+				predict = i
+
+		random_labels = []
+		for i in range(0, len(counter)):
+			if counter[i] == m_counter:
+				random_labels.append(i)
+
+		predict = random_labels[random.randrange(0,len(random_labels))]
+		confusion_matrix[predict][v_label] = confusion_matrix[predict][v_label] + 1
+		counter_label[v_label] = counter_label[v_label] + 1
+
+
+	for i in range(0, len(confusion_matrix)):
+		for j in range(0, len(confusion_matrix[i])):
+			confusion_matrix[i][j] = confusion_matrix[i][j] / counter_label[j] 
+	print_confusion_matrix(confusion_matrix)
+
+def print_confusion_matrix(matrix):	
+	for row in matrix:
+		print row
+		
 
 load("hw2train.txt", training_set)
 load("hw2validate.txt", validation_set)
 load("hw2test.txt", test_set)
 
-for k in [1,3,5,11,16,21]:
-	print "k:" + str(k) + " = " + str(calc_error(k, training_set, training_set))
+calculate_confusion_matrix(3, training_set, test_set)
 	
 
 

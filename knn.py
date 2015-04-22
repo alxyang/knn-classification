@@ -42,14 +42,13 @@ def check_data(test_point, data_point, ds, k):
 			ds[index] = (d, test_point[1])
 
 def calc_error(k, tr_set, v_set):
-	ds = []
 	num_samples = len(v_set)
 	errors = 0
 
 	debug_counter  = 0
 
 	for (v_feature, v_label) in v_set:
-
+		ds = []
 		for training_point in tr_set:
 			check_data(training_point, (v_feature, v_label), ds, k)
 

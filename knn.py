@@ -1,6 +1,7 @@
 import re
 import numpy
 import math
+import random
 
 training_set = []
 validation_set = []
@@ -64,6 +65,12 @@ def calc_error(k, tr_set, v_set):
 				m_counter = counter[i]
 				predict = i
 
+		random_labels = []
+		for i in range(0, len(counter)):
+			if counter[i] == m_counter:
+				random_labels.append(i)
+
+		predict = random_labels[random.randrange(0,len(random_labels))]
 		if not(predict == v_label):
 			errors = errors + 1
 

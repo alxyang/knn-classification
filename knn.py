@@ -57,7 +57,14 @@ def calc_error(k, tr_set, v_set):
 		for (dist, lab) in ds:
 			counter[lab] = counter[lab] + 1;
 		
-		predict = max(counter)
+		m_counter = -1
+		predict = -1
+
+		for i in range(0, len(counter)):
+			if counter[i] > m_counter:
+				m_counter = counter[i]
+				predict = i
+
 		if not(predict == v_label):
 			errors = errors + 1
 

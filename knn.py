@@ -67,14 +67,16 @@ def calc_error(k, tr_set, v_set):
 		if not(predict == v_label):
 			errors = errors + 1
 
-		print "hi" + str(debug_counter)
 		debug_counter = debug_counter  + 1
-	print errors
+	return float(errors)/num_samples
 
 
 load("hw2train.txt", training_set)
 load("hw2validate.txt", validation_set)
 load("hw2test.txt", test_set)
 
-calc_error(1, training_set, training_set)
+for k in [1,3,5,11,16,21]:
+	print "k:" + str(k) + " = " + str(calc_error(k, training_set, training_set))
+	
+
 
